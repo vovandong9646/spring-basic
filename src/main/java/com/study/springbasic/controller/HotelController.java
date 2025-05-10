@@ -5,7 +5,6 @@ import com.study.springbasic.dto.request.HotelSearchCriteria;
 import com.study.springbasic.dto.request.UpdateHotelRequest;
 import com.study.springbasic.dto.response.HotelDTO;
 import com.study.springbasic.dto.response.PagedResponse;
-import com.study.springbasic.entity.Hotel;
 import com.study.springbasic.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -37,11 +36,11 @@ public class HotelController {
    * @return
    */
   @GetMapping(value = "/{id}", produces = "application/json")
-  public ResponseEntity<Hotel> getHotel(@PathVariable("id") Long hotelId) {
+  public ResponseEntity<HotelDTO> getHotel(@PathVariable("id") Long hotelId) {
     //    return ResponseEntity.status(HttpStatus.OK).body(hotelService.getHotelById(hotelId));
-    Hotel hotel = hotelService.getHotelById(hotelId);
-    if (hotel != null) {
-      return ResponseEntity.ok(hotel); // 200 OK
+    HotelDTO hotelDTO = hotelService.getHotelById(hotelId);
+    if (hotelDTO != null) {
+      return ResponseEntity.ok(hotelDTO); // 200 OK
     } else {
       return ResponseEntity.notFound().build(); // 404 Not Found
     }
@@ -76,7 +75,7 @@ public class HotelController {
    * @return
    */
   @PostMapping({"/", ""})
-  public ResponseEntity<Hotel> createHotel(@RequestBody CreateHotelRequest request) {
+  public ResponseEntity<HotelDTO> createHotel(@RequestBody CreateHotelRequest request) {
     return ResponseEntity.status(HttpStatus.CREATED).body(hotelService.createHotel(request));
   }
 
@@ -88,10 +87,10 @@ public class HotelController {
    * @return
    */
   @PutMapping({"/{id}"})
-  public ResponseEntity<Hotel> updateHotel(@PathVariable("id") Long hotelId,
+  public ResponseEntity<HotelDTO> updateHotel(@PathVariable("id") Long hotelId,
       @RequestBody UpdateHotelRequest request) {
 
-    Hotel hotelUpdated = hotelService.updateHotel(hotelId, request);
+    HotelDTO hotelUpdated = hotelService.updateHotel(hotelId, request);
 
     if (hotelUpdated != null) {
       return ResponseEntity.ok(hotelUpdated); // 200 OK
