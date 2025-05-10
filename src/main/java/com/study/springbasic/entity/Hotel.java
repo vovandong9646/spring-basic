@@ -3,7 +3,10 @@ package com.study.springbasic.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.util.Date;
 import lombok.Data;
@@ -14,7 +17,7 @@ import lombok.Data;
 public class Hotel {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long hotelId;
 
@@ -34,4 +37,21 @@ public class Hotel {
 
   @Column(name = "updated_by")
   private String updatedBy;
+
+  // before insert
+  @PrePersist
+  public void beforeInsert() {
+    Date now = new Date();
+    this.setCreatedAt(now);
+    this.setCreatedBy("SYSTEM"); // change to userlogin
+    this.setUpdatedAt(now);
+    this.setUpdatedBy("SYSTEM"); // change to userlogin
+  }
+
+  @PreUpdate
+  public void beforeUpdate() {
+    Date now = new Date();
+    this.setUpdatedAt(now);
+    this.setUpdatedBy("SYSTEM"); // change to userlogin
+  }
 }
